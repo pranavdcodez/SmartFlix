@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070d17">
+  <title>SmartFlix — Discover your next movie</title>
+  <link rel="preconnect" href="https://image.tmdb.org">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" id="homeLink">Smart<span>Flix</span></a>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-view="home"><span>⌂</span> Home</button>
+        <button class="nav-item" data-view="search"><span>⌕</span> Search movies</button>
+        <button class="nav-item" data-view="top5"><span>☆</span> My Top 5</button>
+        <button class="nav-item" data-view="history"><span>◷</span> Watch history</button>
+      </nav>
+      <div class="sidebar-promo">
+        <span class="eyebrow">YOUR NEXT FAVOURITE</span>
+        <h3>One search.<br>Endless stories.</h3>
+        <p>Discover movies across languages and genres.</p>
+        <span class="promo-spark">✦</span>
+      </div>
+      <div class="sidebar-bottom"><span class="live-dot"></span> R recommendation engine</div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand">Smart<span>Flix</span></div>
+        <div class="topbar-copy"><span class="eyebrow">YOUR PERSONAL CINEMA</span><strong>Find your next favourite</strong></div>
+        <form class="search-form" id="searchForm" autocomplete="off">
+          <span class="search-icon">⌕</span>
+          <input id="movieInput" type="search" placeholder="Search any movie title..." aria-label="Search movie title">
+          <select id="languageFilter" aria-label="Filter language">
+            <option value="All">All languages</option>
+            <option value="Hindi">Hindi</option><option value="English">English</option>
+            <option value="Marathi">Marathi</option><option value="Tamil">Tamil</option>
+            <option value="Telugu">Telugu</option><option value="Malayalam">Malayalam</option>
+            <option value="Kannada">Kannada</option><option value="Korean">Korean</option>
+            <option value="Japanese">Japanese</option><option value="Spanish">Spanish</option>
+            <option value="French">French</option><option value="Bengali">Bengali</option>
+            <option value="Chinese">Chinese</option><option value="German">German</option>
+          </select>
+          <button class="search-button" type="submit">Search <span>↗</span></button>
+          <div class="suggestions hidden" id="suggestions"></div>
+        </form>
+        <div class="api-state" title="R API status"><span class="live-dot" id="statusDot"></span><span id="statusText">Connecting to R…</span></div>
+      </header>
+
+      <section class="hero" id="hero">
+        <div class="hero-art" id="heroArt"></div>
+        <div class="hero-shade"></div>
+        <div class="hero-content">
+          <span class="hero-kicker"><span class="kicker-line"></span> DISCOVER SOMETHING GREAT</span>
+          <h1>Stories worth<br><em>staying in for.</em></h1>
+          <p>Search films from around the world and get recommendations picked around your taste.</p>
+          <div class="hero-actions">
+            <button class="primary-button" id="heroSearchButton">⌕ &nbsp; Search a movie</button>
+            <button class="secondary-button" id="heroTopButton">☆ &nbsp; My Top 5</button>
+          </div>
+          <div class="hero-stats"><span><b>45K+</b> movie records*</span><span class="stat-divider"></span><span><b>Many languages</b> to explore</span></div>
+          <small class="fine-print">*Approximate dataset catalogue size; availability varies by title.</small>
+        </div>
+        <div class="hero-caption"><span class="caption-dot"></span> YOUR NEXT MOVIE NIGHT STARTS HERE</div>
+      </section>
+
+      <section class="feature-strip" aria-label="SmartFlix features">
+        <div class="feature-pill"><span>🌍</span><div><b>Worldwide cinema</b><small>Explore movies across languages</small></div></div>
+        <div class="feature-pill"><span>🎭</span><div><b>Movie details</b><small>Cast, director, year and genres</small></div></div>
+        <div class="feature-pill"><span>✨</span><div><b>Smart recommendations</b><small>Get your personal Top 5 picks</small></div></div>
+        <div class="feature-pill"><span>🕒</span><div><b>Watch history</b><small>Return to your recent searches</small></div></div>
+      </section>
+
+      <section class="content-section hidden" id="searchResultsSection">
+        <div class="section-heading"><div><span class="eyebrow">MATCHING YOUR SEARCH</span><h2 id="searchHeading">Search results</h2></div><span class="result-count" id="searchCount"></span></div>
+        <div class="movie-grid" id="searchResults"></div>
+        <p class="empty-state hidden" id="searchEmpty">No matches found. Try another title or set language to All languages.</p>
+      </section>
+
+      <section class="content-section hidden" id="recommendationsSection">
+        <div class="section-heading"><div><span class="eyebrow">BUILT AROUND YOUR PICK</span><h2>Because you searched <span id="selectedTitle">—</span></h2><p class="section-subtitle" id="selectedSummary"></p></div><span class="result-count" id="recCount"></span></div>
+        <div class="selected-movie" id="selectedMovie"></div>
+        <div class="section-heading compact"><div><span class="eyebrow">YOUR PERSONAL SHORTLIST</span><h2>Top 5 recommendations</h2></div><span class="top5-label">✦ SMARTFLIX PICKS</span></div>
+        <div class="movie-grid top-five-grid" id="recommendationGrid"></div>
+        <p class="empty-state hidden" id="recEmpty">No similar movies were found for this selection. Try another movie.</p>
+      </section>
+
+      <section class="content-section" id="welcomeSection">
+        <div class="section-heading"><div><span class="eyebrow">EXPLORE THE CATALOGUE</span><h2>Popular ways to discover</h2><p class="section-subtitle">Start with a title you love, then let SmartFlix find the next one.</p></div></div>
+        <div class="discovery-grid">
+          <button class="discovery-card" data-query="3 Idiots"><span class="discovery-icon orange">✦</span><span><b>Hindi favourites</b><small>Try “3 Idiots”</small></span><span class="discovery-arrow">↗</span></button>
+          <button class="discovery-card" data-query="Inception"><span class="discovery-icon purple">◈</span><span><b>Mind-bending stories</b><small>Try “Inception”</small></span><span class="discovery-arrow">↗</span></button>
+          <button class="discovery-card" data-query="Parasite"><span class="discovery-icon blue">✧</span><span><b>World cinema</b><small>Try “Parasite”</small></span><span class="discovery-arrow">↗</span></button>
+        </div>
+      </section>
+
+      <section class="content-section hidden" id="top5View">
+        <div class="section-heading"><div><span class="eyebrow">YOUR PERSONAL SHORTLIST</span><h2>My Top 5</h2><p class="section-subtitle">Your latest five recommendations appear here after a movie search.</p></div></div>
+        <div class="movie-grid top-five-grid" id="top5Grid"></div>
+        <p class="empty-state" id="top5Empty">Search for a movie to create your personal Top 5 list.</p>
+      </section>
+
+      <section class="content-section hidden" id="historyView">
+        <div class="section-heading"><div><span class="eyebrow">PICK UP WHERE YOU LEFT OFF</span><h2>Watch history</h2><p class="section-subtitle">Movies you have searched for on this browser.</p></div><button class="secondary-button small-button" id="clearHistory">Clear history</button></div>
+        <div class="movie-grid" id="historyGrid"></div>
+        <p class="empty-state" id="historyEmpty">Your history will appear here after you search for movies.</p>
+      </section>
+      <footer class="footer"><span class="brand footer-brand">Smart<span>Flix</span></span><span>Discover. Explore. Repeat.</span><span>Powered by your R recommendation engine</span></footer>
+    </main>
+  </div>
+
+  <div class="toast hidden" id="toast" role="status"></div>
+  <div class="modal hidden" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-backdrop" data-close-modal aria-label="Close details"></button>
+    <article class="modal-card"><button class="modal-close" data-close-modal aria-label="Close">×</button><div id="modalContent"></div></article>
+  </div>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

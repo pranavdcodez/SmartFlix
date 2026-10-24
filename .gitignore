@@ -1,0 +1,14 @@
+# R / RStudio
+.Rproj.user/
+.RData
+.RDataTmp*
+.Rhistory
+*.Rproj
+
+# Big raw datasets (over GitHub's 100 MB limit) - keep locally only
+raw/
+credits_full.csv
+
+# OS
+.DS_Store
+Thumbs.db
